@@ -1,0 +1,11 @@
+id_turno,dni_paciente,id_medico,id_especialidad,fecha,hora,estado
+1,,1,1,2026-07-01,09:00,disponible
+2,,1,1,2026-07-01,09:30,disponible
+3,,2,2,2026-07-02,10:00,disponible
+4,,2,2,2026-07-02,10:30,disponible
+5,,3,3,2026-07-03,11:00,disponible
+6,,3,3,2026-07-03,11:30,disponible
+7,,4,4,2026-07-04,15:00,disponible
+8,,4,4,2026-07-04,15:30,disponible
+9,30111222,3,3,2026-07-05,12:00,reservado
+10,28999888,1,1,2026-07-06,09:00,reservado
