@@ -114,7 +114,6 @@ def simular_bot():
 
         # --- ESTADO ESPERANDO ESPECIALIDAD ---
         elif estado_actual == ESTADO_ESPERANDO_ESPECIALIDAD:
-            print("-------------------------------------------------------------------------------------------")
             print("Turni: Estas son nuestras especialidades disponibles:")
             for id_esp, nombre_esp in tabla_especialidades.items():
                 print(f"  [{id_esp}] {nombre_esp}")
@@ -128,38 +127,47 @@ def simular_bot():
                 
             id_seleccionado = int(entrada)
             contexto_usuario["id_especialidad"] = id_seleccionado
-            print("-------------------------------------------------------------------------------------------")
-            print(f"Turni: [Consultando disponibilidad de turnos para {tabla_especialidades[id_seleccionado]}...]")
+            print(f"Turni: Consultando agenda de turnos para {tabla_especialidades[id_seleccionado]}...")
             
-            # Filtrar turnos disponibles para esa especialidad (Compuerta 2)
-            turnos_disponibles = [t for t in tabla_agenda_turnos if t["id_especialidad"] == id_seleccionado and t["estado"] == "Disponible"]
+            # CAMBIO AQUÍ: Ahora traemos TODOS los turnos de la especialidad (tanto Disponibles como Ocupados)
+            turnos_totales = [t for t in tabla_agenda_turnos if t["id_especialidad"] == id_seleccionado]
             
-            if not turnos_disponibles:
-                # Camino Infeliz: No hay turnos libres
-                print("Turni: [!] En este momento no hay turnos libres para esta especialidad.")
-                print("Turni: Te hemos agregado a la lista de espera automática. Proceso finalizado sin turno.")
+            if not turnos_totales:
+                print("Turni: [!] En este momento no hay turnos cargados para esta especialidad.")
+                print("Turni: Proceso finalizado.")
                 estado_actual = ESTADO_FIN
             else:
-                # Camino SÍ: Hay turnos
-                contexto_usuario["turnos_opciones"] = turnos_disponibles
+                contexto_usuario["turnos_opciones"] = turnos_totales
                 estado_actual = ESTADO_ESPERANDO_HORARIO
 
-        # --- ESTADO ESPERANDO HORARIO ---
+        # --- ESTADO ESPERANDO HORARIO (Con validación de ocupado) ---
         elif estado_actual == ESTADO_ESPERANDO_HORARIO:
             print("-------------------------------------------------------------------------------------------")
-            print("Turni: Turnos disponibles encontrados:")
+            print("Turni: Agenda de turnos para la especialidad seleccionada:")
             opciones = contexto_usuario["turnos_opciones"]
+            
+            # Mostramos todos, pero aclaramos si está Disponible u Ocupado
             for indice, turno in enumerate(opciones):
-                print(f"  [{indice + 1}] {turno['fecha_hora']} con el/la {turno['medico']}")
+                estado_visual = "Disponible" if turno['estado'] == "Disponible" else "OCUPADO"
+                print(f"  [{indice + 1}] {turno['fecha_hora']} con el/la {turno['medico']} ({estado_visual})")
                 
             entrada = input("Turni: Seleccioná el número del horario deseado: ").strip()
             
-            # Camino Infeliz: Opción fuera de rango
+            # Camino Infeliz 1: Opción fuera de rango de la lista
             if not entrada.isdigit() or int(entrada) < 1 or int(entrada) > len(opciones):
-                print("Turni: [!] El horario seleccionado no es válido. Elija una opción de la lista.")
+                print("Turni: [!] Opción no válida. Elija un número de la lista mostrada.")
                 continue
                 
             turno_elegido = opciones[int(entrada) - 1]
+            
+            # NUEVO CAMINO INFELIZ 2: El usuario elige un turno que figura como OCUPADO
+            if turno_elegido["estado"] == "Ocupado":
+                print(f"Turni: [!] El turno del {turno_elegido['fecha_hora']} ya no se encuentra disponible.")
+                print("Turni: Alguien reservó este cupo recientemente. Por favor, selecciona otra opción que esté libre.")
+                # Al no cambiar el estado_actual, el bucle se repite y le vuelve a mostrar la lista para que elija bien.
+                continue
+                
+            # Si pasa la validación (está Disponible), avanza al camino feliz
             contexto_usuario["turno_elegido"] = turno_elegido
             estado_actual = ESTADO_ESPERANDO_CONFIRMACION
 
