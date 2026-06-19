@@ -209,6 +209,7 @@ def simular_bot():
         
         # --- ESTADO ESPERANDO ESPECIALIDAD ---
         elif estado_actual == ESTADO_ESPERANDO_ESPECIALIDAD:
+            print("-------------------------------------------------------------------------------------------")
             print("Turni: Estas son nuestras especialidades disponibles:")
 
             for id_esp, nombre_esp in tabla_especialidades.items():
