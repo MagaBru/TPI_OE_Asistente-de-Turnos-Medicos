@@ -1,0 +1,16 @@
+id_turno,id_especialidad,medico,fecha_hora,estado,dni_paciente
+101,1,Dra. Martinez,2026-06-22 09:00,Disponible,37520298
+102,1,Dra. Martinez,2026-06-22 11:30,Disponible,
+103,1,Dr. Rossi,2026-06-23 16:00,Ocupado,37520298
+104,2,Dr. Facchini,2026-06-22 10:00,Ocupado,37520298
+105,2,Dr. Facchini,2026-06-22 10:30,Disponible,37520298
+106,2,Dra. Sola,2026-06-25 18:15,Ocupado,
+107,3,Dr. Casares,2026-06-23 14:00,Ocupado,
+108,3,Dr. Casares,2026-06-23 14:45,Disponible,
+109,3,Dra. Lopez,2026-06-26 08:30,Disponible,
+110,4,Dra. Rossi,2026-06-24 09:15,Disponible,
+111,4,Dr. Alvarez,2026-06-24 11:00,Disponible,
+112,4,Dr. Alvarez,2026-06-24 12:30,Disponible,
+113,5,Dr. Peralta,2026-06-25 15:30,Ocupado,
+114,5,Dr. Peralta,2026-06-25 16:00,Ocupado,
+115,5,Dra. Vega,2026-06-27 10:15,Ocupado,
